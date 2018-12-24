@@ -1,0 +1,194 @@
+/**
+ * @file mip-pbpix 组件
+ * @author cuipengyu
+ * @content   记录信息：来源，打开网页时间,离开网页时间，页面总高度，滚动长度，屏幕长宽，操作系统，浏览器型号
+ */
+
+define(function(require) {
+	'use strict';
+
+	var customElement = require('customElement').create();
+		
+	customElement.pixInfo ={
+		openTime: new Date().getTime(),
+		closeTime: null,
+		referer: '',
+		documentSize: {width:0,height:0},
+		screenSize: {width:0,height:0},
+		scrollTop: 0, scrollHeight: 0,clientHeight: 0,
+		os: '',browser:'',
+	};
+
+	/**
+	 * build的时候回调，只会执行一次
+	 */
+	customElement.prototype.build = function() {
+		// TODO
+		var element = this.element;
+		var doc = document;
+
+		doc.addEventListener('click', function(e) {
+			console.log(customElement.pixInfo);
+		}, false)
+
+
+		window.addEventListener('load', function(e) {
+			customElement.pixInfo.openTime = new Date().getTime();
+			customElement.pixInfo.referer = document.referrer;
+			customElement.pixInfo.os=getOSInfo();
+			customElement.pixInfo.browser=getBrowserInfo();
+			customElement.pixInfo.screenSize = getScreenSize();
+			customElement.pixInfo.documentSize = getDocumentSize();
+			customElement.pixInfo.scrollHeight = getScrollHeight();
+			customElement.pixInfo.clientHeight = getClientHeight();
+		});
+		window.addEventListener('beforeunload', function(e) {
+			customElement.pixInfo.closeTime = new Date().getTime();
+		});
+		window.addEventListener('scroll',function(e){
+			var sTop = getScrollTop();
+			if(pixInfo.scrollTop<sTop){
+				customElement.pixInfo.scrollTop = sTop;
+			}
+			customElement.pixInfo.scrollHeight = getScrollHeight();
+			customElement.pixInfo.documentSize = getDocumentSize();
+			customElement.pixInfo.clientHeight = getClientHeight();
+		})
+
+	};
+
+	return customElement;
+	
+	
+	/********************** 开始自定义函数 *******************/
+
+	// 获取滚动的位置
+	function getScrollTop() {
+		var scrollTop = 0;
+		if (document.documentElement && document.documentElement.scrollTop) {
+			scrollTop = document.documentElement.scrollTop;
+		} else if (document.body) {
+			scrollTop = document.body.scrollTop;
+		}
+		return scrollTop;
+	}
+
+	function getScrollHeight() {
+		var scrollHeight = 0;
+		if (document.documentElement && document.documentElement.scrollHeight) {
+			scrollHeight = document.documentElement.scrollHeight;
+		} else if (document.body) {
+			scrollHeight = document.body.scrollHeight;
+		}
+		return scrollHeight;
+	}
+	function getClientHeight() {
+		var clientHeight = 0;
+		if (document.documentElement && document.documentElement.clientHeight) {
+			clientHeight = document.documentElement.clientHeight;
+		} else if (document.body) {
+			clientHeight = document.body.clientHeight;
+		}
+		return clientHeight;
+	}
+	function getScreenSize() {
+		var w = screen.width;
+		var h = screen.height;
+		return {
+			'width': w,
+			'height': h
+		};
+	}
+
+	function getDocumentSize() {
+		var h = 0;
+		if (document.documentElement && document.documentElement.offsetHeight) {
+			h = document.documentElement.offsetHeight;
+		} else if (document.body) {
+			h = document.body.offsetHeight;
+		}
+		var w = 0;
+		if (document.documentElement && document.documentElement.offsetWidth) {
+			w = document.documentElement.offsetWidth;
+		} else if (document.body) {
+			w = document.body.offsetWidth;
+		}
+		return {
+			'width': w,
+			'height': h
+		};
+	}
+
+	function getBrowserInfo() {
+		var agent = navigator.userAgent.toLowerCase();
+		var regStr_ie = /msie [\d.]+;/gi;
+		var regStr_ff = /firefox\/[\d.]+/gi
+		var regStr_chrome = /chrome\/[\d.]+/gi;
+		var regStr_saf = /safari\/[\d.]+/gi;
+		var isIE = agent.indexOf("compatible") > -1 && agent.indexOf("msie" > -1); //判断是否IE<11浏览器  
+		var isEdge = agent.indexOf("edge") > -1 && !isIE; //判断是否IE的Edge浏览器  
+		var isIE11 = agent.indexOf('trident') > -1 && agent.indexOf("rv:11.0") > -1;
+		if (isIE) {
+			var reIE = new RegExp("msie (\\d+\\.\\d+);");
+			reIE.test(agent);
+			var fIEVersion = parseFloat(RegExp["$1"]);
+			if (fIEVersion == 7) {
+				return "IE/7";
+			} else if (fIEVersion == 8) {
+				return "IE/8";
+			} else if (fIEVersion == 9) {
+				return "IE/9";
+			} else if (fIEVersion == 10) {
+				return "IE/10";
+			}
+		} //isIE end 
+		if (isIE11) {
+			return "IE/11";
+		}
+		//firefox
+		if (agent.indexOf("firefox") > 0) {
+			return agent.match(regStr_ff);
+		}
+		//Safari
+		if (agent.indexOf("safari") > 0 && agent.indexOf("chrome") < 0) {
+			return agent.match(regStr_saf);
+		}
+		//Chrome
+		if (agent.indexOf("chrome") > 0) {
+			return agent.match(regStr_chrome);
+		}
+	}
+
+	function getOSInfo() {
+		var sUserAgent = navigator.userAgent;
+
+		var isWin = (navigator.platform == "Win32") || (navigator.platform == "Windows");
+		var isMac = (navigator.platform == "Mac68K") || (navigator.platform == "MacPPC") || (navigator.platform ==
+			"Macintosh") || (navigator.platform == "MacIntel");
+		if (isMac) return "Mac";
+		var isUnix = (navigator.platform == "X11") && !isWin && !isMac;
+		if (isUnix) return "Unix";
+		var isLinux = (String(navigator.platform).indexOf("Linux") > -1);
+
+		var bIsAndroid = sUserAgent.toLowerCase().match(/android/i) == "android";
+		if (isLinux) {
+			if (bIsAndroid) return "Android";
+			else return "Linux";
+		}
+		if (isWin) {
+			var isWin2K = sUserAgent.indexOf("Windows NT 5.0") > -1 || sUserAgent.indexOf("Windows 2000") > -1;
+			if (isWin2K) return "Win2000";
+			var isWinXP = sUserAgent.indexOf("Windows NT 5.1") > -1 ||
+				sUserAgent.indexOf("Windows XP") > -1;
+			if (isWinXP) return "WinXP";
+			var isWin2003 = sUserAgent.indexOf("Windows NT 5.2") > -1 || sUserAgent.indexOf("Windows 2003") > -1;
+			if (isWin2003) return "Win2003";
+			var isWinVista = sUserAgent.indexOf("Windows NT 6.0") > -1 || sUserAgent.indexOf("Windows Vista") > -1;
+			if (isWinVista) return "WinVista";
+			var isWin7 = sUserAgent.indexOf("Windows NT 6.1") > -1 || sUserAgent.indexOf("Windows 7") > -1;
+			if (isWin7) return "Win7";
+		}
+		return "other";
+	}
+
+});
