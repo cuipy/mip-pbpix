@@ -39,7 +39,7 @@ define(function (require) {
 
         var postUrl = element.getAttribute('postUrl');
         if (postUrl == null) {
-            postUrl = 'https://www.pingbuwang.com/index/ApiAnonyMipPix/index.html';
+            postUrl = '/index/ApiAnonyMipPix/index.html';
         }
         customElement.postUrl = postUrl;
 
