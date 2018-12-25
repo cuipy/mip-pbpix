@@ -43,8 +43,14 @@ define(function (require) {
         }
         customElement.postUrl = postUrl;
 
+        var title = element.getAttribute('title');
+        if (title == null) {
+            title = document.title;
+        }
+
         window.addEventListener('load', function (e) {
             customElement.pixInfo.event = 'window.load';
+            customElement.pixInfo.title = title;
             customElement.pixInfo.openTime = new Date().getTime();
             customElement.pixInfo.referer = document.referrer;
             customElement.pixInfo.os = getOSInfo();
