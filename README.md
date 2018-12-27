@@ -17,6 +17,7 @@ mip-pbpix 是平步科技推出的mip统计组件，该组件将在网页打开�
 ```json
  {"event":"window.beforeunload",
  "loadId":"OPqjrggJ3ENxlptPsE6oRboobhjCLFE0",
+ "cookieId": getCookiePbpixId(),
  "openTime":1545737356878,
  "closeTime":1545737630627,
  "referer":"http://127.0.0.1:8000/local-extension-debug/mip-pbpix",
@@ -32,7 +33,10 @@ mip-pbpix 是平步科技推出的mip统计组件，该组件将在网页打开�
 ```
 
 ### loadId 
-标记了一次唯一的页面请求，打开页面，到离开页面，loadId不会改变，也不会重复。
+标记了一次页面请求，值是唯一的，打开页面，到离开页面，loadId不会改变，也不会重复。
+
+### cookieId
+唯一标记客户的标识，除非清除客户端cookie，否则该值不会改变
 
 其他字段都比较简单，不赘述
 
@@ -64,4 +68,5 @@ mip-pbpix 是平步科技推出的mip统计组件，该组件将在网页打开�
 ## 版本升级
 
 ### 1.0.1
-修正获取浏览器版本的方法。
+修正获取浏览器版本的方法。   
+增加了cookieId的字段    
