@@ -38,8 +38,8 @@ define(function (require) {
         var element = this.element;
 
         var postUrl = element.getAttribute('postUrl');
-        if (postUrl == null) {
-            postUrl = '/index/ApiAnonyMipPix/index.html';
+        if (postUrl == null || postUrl === '') {
+            postUrl = 'https://www.pingbuwang.com/index/ApiAnonyMipPix/index.html';
         }
         customElement.postUrl = postUrl;
 
@@ -179,15 +179,15 @@ define(function (require) {
         }
         // firefox
         if (agent.indexOf('firefox') > 0) {
-            return agent.match(regStrFf);
+            return agent.match(regStrFf)[0];
         }
         // Safari
         if (agent.indexOf('safari') > 0 && agent.indexOf('chrome') < 0) {
-            return agent.match(regStrSaf);
+            return agent.match(regStrSaf)[0];
         }
         // Chrome
         if (agent.indexOf('chrome') > 0) {
-            return agent.match(regStrChrome);
+            return agent.match(regStrChrome)[0];
         }
     }
 
