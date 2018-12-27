@@ -15,7 +15,7 @@ define(function (require) {
         loadId: uuid(),
         openTime: new Date().getTime(),
         closeTime: null,
-        referer: '',
+        referrer: '',
         documentSize: {
             width: 0,
             height: 0
@@ -39,8 +39,8 @@ define(function (require) {
         var element = this.element;
 
         var postUrl = element.getAttribute('postUrl');
-        if (postUrl == null || postUrl === '') {
-            postUrl = '/index/ApiAnonyMipPix/index.html';
+        if (1 || postUrl == null || postUrl === '') {
+            postUrl = 'https://www.pingbuwang.com/index/ApiAnonyMipPix/index.html';
         }
         customElement.postUrl = postUrl;
 
@@ -53,7 +53,7 @@ define(function (require) {
             customElement.pixInfo.event = 'window.load';
             customElement.pixInfo.title = title;
             customElement.pixInfo.openTime = new Date().getTime();
-            customElement.pixInfo.referer = document.referrer;
+            customElement.pixInfo.referrer = document.referrer;
             customElement.pixInfo.os = getOSInfo();
             customElement.pixInfo.browser = getBrowserInfo();
             customElement.pixInfo.screenSize = getScreenSize();
@@ -262,7 +262,7 @@ define(function (require) {
         var json = JSON.stringify(info);
         fetch(customElement.postUrl, {
             method: 'POST',
-            mode: 'cors',
+            mode: 'no-cors',
             headers: {
                 'Content-Type': 'application/x-www-form-urlencoded'
             },
