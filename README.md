@@ -46,7 +46,7 @@ mip-pbpix 是平步科技推出的mip统计组件，该组件将在网页打开�
 
 ### 基本用法
 ```html
-<mip-pbpix postUrl="https://域名/API接口路径" title="平步科技mip-pbpix简介"></mip-pbpix>
+<mip-pbpix postUrl1="https://www.pingbuwang.com/index/ApiAnonyMipPix/do_pix" title="平步科技mip-pbpix简介"></mip-pbpix>
 ```
 
 ## 属性
