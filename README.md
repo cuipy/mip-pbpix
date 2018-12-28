@@ -68,6 +68,9 @@ mip-pbpix 是平步科技推出的mip统计组件，该组件将在网页打开�
 
 ## 版本升级
 
+### 1.0.3
+修正clientId的生成方法
+
 ### 1.0.2
 修正跨域请求的时候，携带cookie字段，否则会无法获得session    
 修正fetch的跨域，增加了credentials: 'include',
