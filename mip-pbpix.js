@@ -11,7 +11,7 @@ define(function (require) {
 
     customElement.pixInfo = {
         event: '',
-        cookieId: getCookiePbpixId(),
+        clientId: getCookiePbpixId(),
         loadId: uuid(),
         openTime: new Date().getTime(),
         closeTime: null,
@@ -39,8 +39,8 @@ define(function (require) {
         var element = this.element;
 
         var postUrl = element.getAttribute('postUrl');
-        if (1 || postUrl == null || postUrl === '') {
-            postUrl = 'https://www.pingbuwang.com/index/ApiAnonyMipPix/index.html';
+        if (postUrl == null || postUrl === '') {
+            postUrl = '/index/ApiAnonyMipPix/do_pix';
         }
         customElement.postUrl = postUrl;
 
@@ -262,7 +262,7 @@ define(function (require) {
         var json = JSON.stringify(info);
         fetch(customElement.postUrl, {
             method: 'POST',
-            mode: 'no-cors',
+            credentials: 'include',
             headers: {
                 'Content-Type': 'application/x-www-form-urlencoded'
             },
