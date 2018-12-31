@@ -38,9 +38,9 @@ define(function (require) {
         // TODO
         var element = this.element;
 
-        var postUrl = element.getAttribute('postUrl1');
+        var postUrl = element.getAttribute('postUrl');
         if (postUrl == null || postUrl === '') {
-            postUrl = 'https://www.pingbuwang.com/index/ApiAnonyMipPix/do_pix3';
+            postUrl = 'https://www.pingbuwang.com/index/ApiAnonyMipPix/do_pix';
         }
         customElement.postUrl = postUrl;
 
